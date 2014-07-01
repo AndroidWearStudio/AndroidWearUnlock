@@ -6,3 +6,6 @@
 - Remove all Pebble stuff
 - Remove MainActivity
 - Add persistent notification (low priority) to prevent WearUnlockService from being killed.
+- Improve onboarding for Android Wear
+-- Select from a connected peer (could be more than one wearable peer available!)
+- Launcher icon

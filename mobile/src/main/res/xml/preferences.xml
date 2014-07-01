@@ -8,7 +8,7 @@
         android:title="@string/app_name" />
 
     <PreferenceScreen
-        android:dependency="enable_pebble_unlock"
+        android:dependency="@string/pref_key_enable"
         android:key="@string/pref_key_set_password"
         android:title="@string/pref_category_password" />
 
