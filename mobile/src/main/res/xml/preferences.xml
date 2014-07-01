@@ -24,8 +24,8 @@
             android:title="Connection Log" >
             <intent
                 android:action="android.intent.action.VIEW"
-                android:targetClass="net.npike.android.pebbleunlock.activity.LogActivity"
-                android:targetPackage="net.npike.android.pebbleunlock" />
+                android:targetClass="net.npike.android.wearunlock.activity.LogActivity"
+                android:targetPackage="net.npike.android.wearunlock" />
         </Preference>
     </PreferenceCategory>
 

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "npike.net.wearunlock"
+        applicationId "net.npike.android.wearunlock"
         minSdkVersion 15
         targetSdkVersion 20
         versionCode 1

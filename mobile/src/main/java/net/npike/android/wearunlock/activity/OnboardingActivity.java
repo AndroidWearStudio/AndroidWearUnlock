@@ -45,6 +45,8 @@ public class OnboardingActivity extends Activity implements OnboardingInterface 
 				.replace(R.id.fragment_placeholder,
 						OnboardingConfigurePasswordFragment.getInstance(),
 						TAG_CONFIGURE_PASSWORD_FRAG).commit();
+
+
 	}
 
 }
