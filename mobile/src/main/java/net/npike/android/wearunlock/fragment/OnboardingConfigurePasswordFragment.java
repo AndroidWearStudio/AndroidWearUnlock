@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import net.npike.android.OnboardingInterface;
 import net.npike.android.wearunlock.R;
+import net.npike.android.wearunlock.WearUnlockApp;
 
 public class OnboardingConfigurePasswordFragment extends PasswordChangeFragment
 		implements OnClickListener {
@@ -37,7 +38,7 @@ public class OnboardingConfigurePasswordFragment extends PasswordChangeFragment
 
 		CharSequence foo = setSpanBetweenTokens(
 				getString(R.string.oboarding_password_description,
-						PebbleUnlockApp.getInstance().getPairedPebbleAddress()),
+						WearUnlockApp.getInstance().getPairedPebbleAddress()),
 				"##",
 				new ForegroundColorSpan(getResources().getColor(
 						R.color.pebble_red)));
