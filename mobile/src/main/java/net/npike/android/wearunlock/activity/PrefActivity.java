@@ -24,6 +24,7 @@ import android.widget.Toast;
 import net.npike.android.wearunlock.BuildConfig;
 import net.npike.android.wearunlock.R;
 import net.npike.android.wearunlock.WearUnlockApp;
+import net.npike.android.wearunlock.WearUnlockService;
 import net.npike.android.wearunlock.fragment.PasswordChangeFragment;
 import net.npike.android.wearunlock.receiver.PebbleUnlockDeviceAdminReceiver;
 
@@ -95,6 +96,8 @@ public class PrefActivity extends PreferenceActivity implements
 
 		getPreferenceManager().getSharedPreferences()
 				.registerOnSharedPreferenceChangeListener(this);
+
+        WearUnlockService.startService(this);
 	}
 
 	@Override

@@ -53,4 +53,5 @@
     <string name="dialog_password_choose_your_password">Choose your password</string>
     <string name="dialog_password_confirm_password">Confirm password</string>
     <string name="admin_description">Allow your Pebble Watch to control if your device is locked or not.</string>
+    <string name="service_waiting_for_wear">Waiting for device...</string>
 </resources>
