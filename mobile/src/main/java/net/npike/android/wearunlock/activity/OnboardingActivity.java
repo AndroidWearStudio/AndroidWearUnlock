@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import net.npike.android.OnboardingInterface;
 import net.npike.android.wearunlock.R;
+import net.npike.android.wearunlock.WearUnlockApp;
 import net.npike.android.wearunlock.fragment.OnboardingConfigurePasswordFragment;
 import net.npike.android.wearunlock.fragment.OnboardingRequestDeviceAdminFragment;
 import net.npike.android.wearunlock.fragment.OnboardingWaitForPebbleAddressFragment;
@@ -40,6 +41,8 @@ public class OnboardingActivity extends Activity implements OnboardingInterface 
 
 	@Override
 	public void onPebbleFound(String address) {
+        WearUnlockApp.getInstance().putPairedPebbleAddress(address);
+
 		getFragmentManager()
 				.beginTransaction()
 				.replace(R.id.fragment_placeholder,

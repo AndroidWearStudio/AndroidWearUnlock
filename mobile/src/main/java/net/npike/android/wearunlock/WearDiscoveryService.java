@@ -20,6 +20,7 @@ import com.google.android.gms.wearable.Wearable;
 import net.npike.android.util.BusProvider;
 import net.npike.android.util.LogWrap;
 import net.npike.android.wearunlock.event.WearNode;
+import net.npike.android.wearunlock.wearutil.DiscoveryHelper;
 
 import java.util.HashSet;
 
@@ -30,7 +31,7 @@ import java.util.HashSet;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class WearDiscoveryService extends Service implements GoogleApiClient.ConnectionCallbacks {
+public class WearDiscoveryService extends Service {
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
     private static final String ACTION_DISCOVER = "net.npike.android.wearunlock.action.DISCOVER";
@@ -119,53 +120,6 @@ public class WearDiscoveryService extends Service implements GoogleApiClient.Con
      * parameters.
      */
     private void handleDiscovery() {
-        mGoogleAppiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(ConnectionResult result) {
-                        LogWrap.l();
-                    }
-                })
-                .addApi(Wearable.API)
-                .build();
-
-        mGoogleAppiClient.connect();
-    }
-
-    private void processPeers() {
-        final Thread t = new Thread() {
-            @Override
-            public void run() {
-                LogWrap.l();
-                try {
-                    HashSet<String> results = new HashSet<String>();
-                    NodeApi.GetConnectedNodesResult nodes =
-                            Wearable.NodeApi.getConnectedNodes(mGoogleAppiClient).await();
-                    for (Node node : nodes.getNodes()) {
-                        LogWrap.l(node.getDisplayName() + " " + node.getId());
-
-                        BusProvider.getInstance().post(new WearNode(node));
-                    }
-                } finally {
-
-                }
-            }
-        };
-        t.start();
-
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        LogWrap.l();
-
-
-        processPeers();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        LogWrap.l();
+        DiscoveryHelper.getInstance().startDiscovery(this);
     }
 }

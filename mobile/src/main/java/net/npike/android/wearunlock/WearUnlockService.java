@@ -3,7 +3,6 @@ package net.npike.android.wearunlock;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -13,10 +12,14 @@ import android.text.TextUtils;
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.WearableListenerService;
+import com.squareup.otto.Subscribe;
 
+import net.npike.android.util.BusProvider;
 import net.npike.android.util.LogWrap;
 import net.npike.android.wearunlock.activity.PrefActivity;
+import net.npike.android.wearunlock.event.WearNode;
 import net.npike.android.wearunlock.provider.LogContract;
+import net.npike.android.wearunlock.wearutil.DiscoveryHelper;
 
 /**
  * Created by npike on 6/30/14.
@@ -43,18 +46,38 @@ public class WearUnlockService extends WearableListenerService {
         super.onCreate();
         LogWrap.l();
 
-        // TODO should see if there is an already connected device when starting service.
-
+        BusProvider.getInstance().register(this);
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // TODO should see if there is an already connected device when starting service.
         setupAsForeground();
+
+
+        if (WearUnlockApp.getInstance().isEnabled()) {
+            LogWrap.l("Existing Android Wear id: ;" + WearUnlockApp.getInstance().getPairedPebbleAddress() + ";");
+
+            DiscoveryHelper.getInstance().startDiscovery(this);
+        }
 
         logMessage(this, true, "Service started.");
     }
 
+    @Subscribe
+    public void onNodeEvent(final WearNode event) {
+        LogWrap.l();
+
+        // found a connected device.  Does this match the one we paired with during onboarding?
+        LogWrap.l(";" + event.getId() + ";");
+        if (TextUtils.equals(event.getId(), WearUnlockApp.getInstance().getPairedPebbleAddress())) {
+            onRequestLockDevice(WearState.CONNECTED);
+        }
+    }
+
     @Override
     public void onDestroy() {
-        super.onDestroy();
         LogWrap.l();
+        BusProvider.getInstance().unregister(this);
+        super.onDestroy();
     }
 
     @Override
@@ -69,9 +92,7 @@ public class WearUnlockService extends WearableListenerService {
         LogWrap.l();
 
         if (WearUnlockApp.getInstance().isEnabled()) {
-            updateNotification(WearState.CONNECTED);
-
-            logMessage(this, true, "Device connected. Would normally disable password.");
+            onRequestLockDevice(WearState.DISCONNECTED);
         }
     }
 
@@ -81,9 +102,7 @@ public class WearUnlockService extends WearableListenerService {
         LogWrap.l();
 
         if (WearUnlockApp.getInstance().isEnabled()) {
-            updateNotification(WearState.DISCONNECTED);
-
-            logMessage(this, false, "Device disconnected.  Not setting password because of testing.");
+            onRequestLockDevice(WearState.DISCONNECTED);
         }
     }
 
@@ -92,6 +111,35 @@ public class WearUnlockService extends WearableListenerService {
         buildNotification(WearState.UNKNOWN);
 
         startForeground(NOTIFICATION_ID, mNotification);
+    }
+
+    private void onRequestLockDevice(WearState state) {
+        LogWrap.l(state.toString());
+        switch (state) {
+            case CONNECTED:
+                // TODO unlock device if we are connected
+                logMessage(this, true, "Device connected. Would normally disable password.");
+                onUnlockDevice();
+                break;
+            case UNKNOWN:
+                // TODO lock device if we aren't sure
+            case DISCONNECTED:
+            default:
+                // TODO lock device
+                logMessage(this, false, "Device disconnected.  Not setting password because of testing.");
+                onLockDevice();
+                break;
+        }
+
+        updateNotification(state);
+    }
+
+    private void onLockDevice() {
+        LogWrap.l();
+    }
+
+    private void onUnlockDevice() {
+        LogWrap.l();
     }
 
     private void updateNotification(WearState state) {
@@ -151,9 +199,7 @@ public class WearUnlockService extends WearableListenerService {
 
 
     private void logMessage(Context context, boolean isConnected, String message) {
-        AsyncQueryHandler asyncQueryHandler = new AsyncQueryHandler(
-                context.getContentResolver()) {
-        };
+
 
         ContentValues cv = new ContentValues();
         cv.put(LogContract.ConnectionEvent.COLUMN_NAME_CONNECTED,
@@ -163,8 +209,8 @@ public class WearUnlockService extends WearableListenerService {
         if (!TextUtils.isEmpty(message)) {
             cv.put(LogContract.ConnectionEvent.COLUMN_NAME_MESSAGE, message);
         }
-        asyncQueryHandler.startInsert(0, null,
-                LogContract.ConnectionEvent.CONTENT_URI, cv);
+
+        getContentResolver().insert(LogContract.ConnectionEvent.CONTENT_URI, cv);
     }
 }
 

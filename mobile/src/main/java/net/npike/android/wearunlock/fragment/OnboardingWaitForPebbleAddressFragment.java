@@ -52,90 +52,18 @@ public class OnboardingWaitForPebbleAddressFragment extends Fragment {
         super.onResume();
 
         BusProvider.getInstance().register(this);
-//        getActivity().startService(new Intent(getActivity(), WearUnlockService.class));
 
         LogWrap.l();
 
         WearDiscoveryService.startActionDiscover(getActivity());
-
-//        mGoogleAppiClient = new GoogleApiClient.Builder(getActivity())
-//                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-//                    @Override
-//                    public void onConnected(Bundle connectionHint) {
-//                        LogWrap.l();
-//
-//
-//                        processPeers();
-//                    }
-//
-//                    @Override
-//                    public void onConnectionSuspended(int cause) {
-//                        LogWrap.l();
-//                    }
-//                })
-//                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-//                    @Override
-//                    public void onConnectionFailed(ConnectionResult result) {
-//                        LogWrap.l();
-//                    }
-//                })
-//                .addApi(Wearable.API)
-//                .build();
-//
-//        mGoogleAppiClient.connect();
-
-//		IntentFilter filter = new IntentFilter();
-//		filter.addAction("com.getpebble.action.PEBBLE_CONNECTED");
-//		filter.addAction("com.getpebble.action.PEBBLE_DISCONNECTED");
-//
-//		mReceiver = new BroadcastReceiver() {
-//
-//			@Override
-//			public void onReceive(Context context, Intent intent) {
-//				final String pebbleAddress = intent
-//						.getStringExtra(EXTRA_PEBBLE_ADDRESS);
-//
-//				WearUnlockApp.getInstance().putPairedPebbleAddress(
-//						pebbleAddress);
-//
-//				try {
-//					((OnboardingInterface) getActivity())
-//							.onPebbleFound(pebbleAddress);
-//				} catch (ClassCastException ccex) {
-//
-//				}
-//			}
-//		};
-//		getActivity().registerReceiver(mReceiver, filter);
-
     }
 
-    protected void processPeers() {
-        LogWrap.l();
 
-        new Runnable() {
-            @Override
-            public void run() {
-                HashSet<String> results = new HashSet<String>();
-                NodeApi.GetConnectedNodesResult nodes =
-                        Wearable.NodeApi.getConnectedNodes(mGoogleAppiClient).await();
-                for (Node node : nodes.getNodes()) {
-                    LogWrap.l(node.getDisplayName() + " " + node.getId());
-                }
-            }
-        }.run();
-
-    }
 
     @Override
     public void onPause() {
         BusProvider.getInstance().unregister(this);
         super.onPause();
-//        try {
-//            getActivity().unregisterReceiver(mReceiver);
-//        } catch (IllegalArgumentException iae) {
-//
-//        }
     }
 
     @Subscribe

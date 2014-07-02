@@ -1,88 +1,112 @@
 package net.npike.android.util;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.DESKeySpec;
-
-import android.util.Base64;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 public class CrappyCrypto {
-	private static String cryptoPass = "max1musTh3d0g";
 
-	public static String encryptIt(String value) {
-		try {
-			DESKeySpec keySpec = new DESKeySpec(cryptoPass.getBytes("UTF8"));
-			SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-			SecretKey key = keyFactory.generateSecret(keySpec);
+    private String iv = "stoneipastoneipa";//Dummy iv (CHANGE IT!)
+    private IvParameterSpec ivspec;
+    private SecretKeySpec keyspec;
+    private Cipher cipher;
 
-			byte[] clearText = value.getBytes("UTF8");
-			// Cipher is not thread safe
-			Cipher cipher = Cipher.getInstance("DES");
-			cipher.init(Cipher.ENCRYPT_MODE, key);
+    private static final String SECRET_KEY = "thisfora23945gt1";//Dummy secretKey (CHANGE IT!)
 
-			String encrypedValue = Base64.encodeToString(
-					cipher.doFinal(clearText), Base64.DEFAULT);
-			//Log.d(TAG, "Encrypted: " + value + " -> " + encrypedValue);
-			return encrypedValue;
+    public CrappyCrypto() {
+        ivspec = new IvParameterSpec(iv.getBytes());
 
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (InvalidKeySpecException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			e.printStackTrace();
-		}
-		return value;
-	}
+        keyspec = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
 
-	public static String decryptIt(String value) {
-		try {
-			DESKeySpec keySpec = new DESKeySpec(cryptoPass.getBytes("UTF8"));
-			SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-			SecretKey key = keyFactory.generateSecret(keySpec);
+        try {
+            cipher = Cipher.getInstance("AES/CBC/NoPadding");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        }
+    }
 
-			byte[] encrypedPwdBytes = Base64.decode(value, Base64.DEFAULT);
-			// cipher is not thread safe
-			Cipher cipher = Cipher.getInstance("DES");
-			cipher.init(Cipher.DECRYPT_MODE, key);
-			byte[] decrypedValueBytes = (cipher.doFinal(encrypedPwdBytes));
+    public byte[] encrypt(String text) throws Exception {
+        if (text == null || text.length() == 0)
+            throw new Exception("Empty string");
 
-			String decrypedValue = new String(decrypedValueBytes);
-			//Log.d(TAG, "Decrypted: " + value + " -> " + decrypedValue);
-			return decrypedValue;
+        byte[] encrypted = null;
 
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (InvalidKeySpecException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			e.printStackTrace();
-		}
-		return value;
-	}
+        try {
+            cipher.init(Cipher.ENCRYPT_MODE, keyspec, ivspec);
+
+            encrypted = cipher.doFinal(padString(text).getBytes());
+        } catch (Exception e) {
+            throw new Exception("[encrypt] " + e.getMessage());
+        }
+
+        return encrypted;
+    }
+
+    public byte[] decrypt(String code) throws Exception {
+        if (code == null || code.length() == 0)
+            throw new Exception("Empty string");
+
+        byte[] decrypted = null;
+
+        try {
+            cipher.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
+
+            decrypted = cipher.doFinal(hexToBytes(code));
+        } catch (Exception e) {
+            throw new Exception("[decrypt] " + e.getMessage());
+        }
+        return decrypted;
+    }
+
+
+    public static String bytesToHex(byte[] data) {
+        if (data == null) {
+            return null;
+        }
+
+        int len = data.length;
+        String str = "";
+        for (int i = 0; i < len; i++) {
+            if ((data[i] & 0xFF) < 16)
+                str = str + "0" + java.lang.Integer.toHexString(data[i] & 0xFF);
+            else
+                str = str + java.lang.Integer.toHexString(data[i] & 0xFF);
+        }
+        return str;
+    }
+
+
+    public static byte[] hexToBytes(String str) {
+        if (str == null) {
+            return null;
+        } else if (str.length() < 2) {
+            return null;
+        } else {
+            int len = str.length() / 2;
+            byte[] buffer = new byte[len];
+            for (int i = 0; i < len; i++) {
+                buffer[i] = (byte) Integer.parseInt(str.substring(i * 2, i * 2 + 2), 16);
+            }
+            return buffer;
+        }
+    }
+
+
+    private static String padString(String source) {
+        char paddingChar = ' ';
+        int size = 16;
+        int x = source.length() % size;
+        int padLength = size - x;
+
+        for (int i = 0; i < padLength; i++) {
+            source += paddingChar;
+        }
+
+        return source;
+    }
 }
