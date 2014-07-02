@@ -92,7 +92,7 @@ public class WearUnlockService extends WearableListenerService {
         LogWrap.l();
 
         if (WearUnlockApp.getInstance().isEnabled()) {
-            onRequestLockDevice(WearState.DISCONNECTED);
+            onRequestLockDevice(WearState.CONNECTED);
         }
     }
 
