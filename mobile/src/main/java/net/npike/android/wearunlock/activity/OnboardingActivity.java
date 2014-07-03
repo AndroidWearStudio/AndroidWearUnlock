@@ -7,8 +7,8 @@ import net.npike.android.OnboardingInterface;
 import net.npike.android.wearunlock.R;
 import net.npike.android.wearunlock.WearUnlockApp;
 import net.npike.android.wearunlock.fragment.OnboardingConfigurePasswordFragment;
+import net.npike.android.wearunlock.fragment.OnboardingDiscoveryFragment;
 import net.npike.android.wearunlock.fragment.OnboardingRequestDeviceAdminFragment;
-import net.npike.android.wearunlock.fragment.OnboardingWaitForPebbleAddressFragment;
 
 public class OnboardingActivity extends Activity implements OnboardingInterface {
 
@@ -25,7 +25,7 @@ public class OnboardingActivity extends Activity implements OnboardingInterface 
 			getFragmentManager()
 					.beginTransaction()
 					.replace(R.id.fragment_placeholder,
-							OnboardingWaitForPebbleAddressFragment.getInstance(),
+							OnboardingDiscoveryFragment.getInstance(),
 							TAG_WAIT_FOR_PEBBLE_FRAG).commit();
 		}
 	}
