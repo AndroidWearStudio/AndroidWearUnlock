@@ -2,36 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView1"
         style="@style/puTextApperanceLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/onboarding_connecting_with_your_pebble" />
+        android:text="Select your Android Wear watch." />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="@string/onboarding_is_your_pebble_currently_turned_on_and_connected_to_your_phone_"
+        android:text="Please make sure your Android Wear watch is powered on and connected to your phone.  Select it below to continue."
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/onboarding_pebble_unlock_needs_you_to_temporarily_turn_off_the_bluetooth_or_power_cycle_your_pebble_"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <ImageView
-        android:contentDescription="@string/onboarding_waiting_for_pebble"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/ic_launcher" />
+    <ListView
+        android:layout_marginTop="16dp"
+        android:id="@+id/listViewDevices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -39,5 +29,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp" />
+
 
 </LinearLayout>

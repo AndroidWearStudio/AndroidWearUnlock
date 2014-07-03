@@ -7,7 +7,7 @@
 
     <style name="puTextApperanceLarge" parent="android:Widget.Holo.Light.TextView">
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
-        <item name="android:textColor">@color/pebble_red</item>
+        <item name="android:textColor">@color/androidwear_accent</item>
     </style>
 
 </resources>

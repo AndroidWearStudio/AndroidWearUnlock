@@ -41,7 +41,7 @@ public class OnboardingConfigurePasswordFragment extends PasswordChangeFragment
 						WearUnlockApp.getInstance().getPairedPebbleAddress()),
 				"##",
 				new ForegroundColorSpan(getResources().getColor(
-						R.color.pebble_red)));
+						R.color.androidwear_accent)));
 		mTextViewPebbleFound.setText(foo);
 
 		bindView(view);

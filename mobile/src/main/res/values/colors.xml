@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="pebble_red">#bb0000</color>
+    <color name="androidwear_accent">#90be4e</color>
 
 </resources>
