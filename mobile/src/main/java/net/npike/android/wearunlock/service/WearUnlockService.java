@@ -140,15 +140,13 @@ public class WearUnlockService extends WearableListenerService {
 
         switch (state) {
             case CONNECTED:
-                // TODO unlock device if we are connected
                 logMessage(true, "Device connected.");
                 lockResult =  onUnlockDevice();
                 break;
             case UNKNOWN:
-                // TODO lock device if we aren't sure
+                // Lock device if we aren't sure
             case DISCONNECTED:
             default:
-                // TODO lock device
                 logMessage(false, "Device disconnected.");
                 lockResult =  onLockDevice();
                 break;

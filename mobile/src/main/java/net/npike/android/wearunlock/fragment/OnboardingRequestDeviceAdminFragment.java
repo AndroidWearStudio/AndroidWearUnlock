@@ -70,8 +70,6 @@ public class OnboardingRequestDeviceAdminFragment extends Fragment implements
                 WearUnlockApp.getInstance().setEnabled(true);
 
                 getActivity().startService(new Intent(getActivity(), WearUnlockService.class));
-				LogWrap.l("password: "+WearUnlockApp.getInstance()
-                        .getPassword());
 				boolean result = mDPM
 						.resetPassword(
                                 WearUnlockApp.getInstance()
