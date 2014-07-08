@@ -1,16 +1,10 @@
-# Work In Progress
+# Wear Unlock
 
-## To Do
-- Start WearUnlockService once user has configured a password
-- Start WearUnlockService on boot if application is enabled and a password is set
-- Remove all Pebble stuff
-- Remove MainActivity
-- Add persistent notification (low priority) to prevent WearUnlockService from being killed.
-- Improve onboarding for Android Wear
--- Select from a connected peer (could be more than one wearable peer available!)
-- Launcher icon
+A simple Android app that enables functionality similiar to the "Trusted Device" unlock features for Android Wear that will eventually show up in Android L. Supported on Jellybean and above.
 
-** To test against Android Wear emulator
+Once you have paired your Android Wear device to this app, it will lock your device with a specified password when your Android Wear device has been disconnected - and unlock your device whenever your Android Wear device is connected.
+
+## To test against Android Wear emulator
 - Install Wear Unlock to a physical device
 - Start Android Wear emulator
 - On device:  Pair with new device, select emulator
