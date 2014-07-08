@@ -26,7 +26,7 @@
             android:label="@string/title_activity_onboarding" />
 
         <service
-            android:name=".WearUnlockService"
+            android:name=".service.WearUnlockService"
             android:enabled="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
@@ -34,11 +34,11 @@
         </service>
 
         <service
-            android:name=".WearDiscoveryService"
+            android:name=".service.WearDiscoveryService"
             android:exported="false"></service>
 
         <provider
-            android:name=".provider.LogProvider"
+            android:name="net.npike.android.wearunlock.provider.LogProvider"
             android:authorities="net.npike.android.wearunlock"
             android:exported="false">
             <grant-uri-permission android:pathPattern=".*" />
@@ -46,13 +46,13 @@
 
 
         <receiver
-            android:name="net.npike.android.wearunlock.receiver.PebbleUnlockDeviceAdminReceiver"
+            android:name="net.npike.android.wearunlock.receiver.WearUnlockDeviceAdminReceiver"
             android:description="@string/admin_description"
             android:label="@string/sample_device_admin"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
-                android:resource="@xml/device_admin_sample" />
+                android:resource="@xml/device_admin" />
 
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />

@@ -1,28 +1,19 @@
-package net.npike.android.wearunlock;
+package net.npike.android.wearunlock.service;
 
 import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.wearable.Node;
-import com.google.android.gms.wearable.NodeApi;
-import com.google.android.gms.wearable.Wearable;
 
 import net.npike.android.util.BusProvider;
-import net.npike.android.util.LogWrap;
-import net.npike.android.wearunlock.event.WearNode;
 import net.npike.android.wearunlock.wearutil.DiscoveryHelper;
-
-import java.util.HashSet;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -64,12 +55,6 @@ public class WearDiscoveryService extends Service {
         intent.setAction(ACTION_DISCOVER);
         context.startService(intent);
     }
-
-
-//    public WearDiscoveryService() {
-//        super("WearDiscoveryService");
-//    }
-
 
     @Override
     public void onCreate() {

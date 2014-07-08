@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import net.npike.android.OnboardingInterface;
 import net.npike.android.wearunlock.R;
 import net.npike.android.wearunlock.WearUnlockApp;
+import net.npike.android.wearunlock.interfaces.OnboardingInterface;
 
 public class OnboardingConfigurePasswordFragment extends PasswordChangeFragment
 		implements OnClickListener {

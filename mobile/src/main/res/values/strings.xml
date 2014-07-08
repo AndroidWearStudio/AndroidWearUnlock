@@ -12,7 +12,7 @@
     <string name="sample_device_admin">Wear Unlock</string>
     <string name="pref_key_enable">enable_wear_unlock</string>
     <string name="pref_key_password">password</string>
-    <string name="notification_pebble_connected_text">Android Wear device connected.  Passcode disabled.</string>
+    <string name="notification_watch_connected_text">Passcode disabled.</string>
     <string name="pref_enable_off">Off</string>
     <string name="pref_enable_on">On</string>
     <string name="pref_category_password">Password</string>
@@ -52,4 +52,5 @@
     <string name="dialog_password_confirm_password">Confirm password</string>
     <string name="admin_description">Allow your Android Wear device to control if your device is locked or not.</string>
     <string name="service_waiting_for_wear">Waiting for device...</string>
+    <string name="notification_disconnected">Passcode enabled.</string>
 </resources>

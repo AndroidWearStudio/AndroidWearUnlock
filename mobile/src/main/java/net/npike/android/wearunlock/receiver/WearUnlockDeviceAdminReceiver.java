@@ -14,7 +14,7 @@ import net.npike.android.wearunlock.WearUnlockApp;
  * All callbacks are on the UI thread and your implementations should not engage
  * in any blocking operations, including disk I/O.
  */
-public class PebbleUnlockDeviceAdminReceiver extends DeviceAdminReceiver {
+public class WearUnlockDeviceAdminReceiver extends DeviceAdminReceiver {
 
 	void showToast(Context context, String msg) {
 		//String status = context.getString(R.string.admin_receiver_status, msg);

@@ -6,7 +6,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import net.npike.android.wearunlock.BuildConfig;
+import net.npike.android.util.LogWrap;
 import net.npike.android.wearunlock.R;
 import net.npike.android.wearunlock.WearUnlockApp;
-import net.npike.android.wearunlock.WearUnlockService;
-import net.npike.android.wearunlock.receiver.PebbleUnlockDeviceAdminReceiver;
+import net.npike.android.wearunlock.service.WearUnlockService;
+import net.npike.android.wearunlock.receiver.WearUnlockDeviceAdminReceiver;
 
 public class OnboardingRequestDeviceAdminFragment extends Fragment implements
 		OnClickListener {
@@ -42,13 +41,13 @@ public class OnboardingRequestDeviceAdminFragment extends Fragment implements
 		mDPM = (DevicePolicyManager) getActivity().getSystemService(
 				Context.DEVICE_POLICY_SERVICE);
 		mDeviceAdminSample = new ComponentName(getActivity(),
-				PebbleUnlockDeviceAdminReceiver.class);
+				WearUnlockDeviceAdminReceiver.class);
 
 		mButtonRequestAdmin = (Button) v.findViewById(R.id.buttonRequestAdmin);
 		mButtonRequestAdmin.setOnClickListener(this);
 
 		mDeviceAdminSample = new ComponentName(getActivity(),
-				PebbleUnlockDeviceAdminReceiver.class);
+				WearUnlockDeviceAdminReceiver.class);
 
 		return v;
 	}
@@ -71,18 +70,15 @@ public class OnboardingRequestDeviceAdminFragment extends Fragment implements
                 WearUnlockApp.getInstance().setEnabled(true);
 
                 getActivity().startService(new Intent(getActivity(), WearUnlockService.class));
-				
-//				boolean result = mDPM
-//						.resetPassword(
-//                                WearUnlockApp.getInstance()
-//										.getPassword(),
-//								DevicePolicyManager.RESET_PASSWORD_REQUIRE_ENTRY);
+				LogWrap.l("password: "+WearUnlockApp.getInstance()
+                        .getPassword());
+				boolean result = mDPM
+						.resetPassword(
+                                WearUnlockApp.getInstance()
+										.getPassword(),
+								DevicePolicyManager.RESET_PASSWORD_REQUIRE_ENTRY);
 
-                boolean result = false;
-				
-				if (BuildConfig.DEBUG){
-					Log.d(TAG, "Password updated = "+result);
-				}
+				LogWrap.l("Password updated = " + result);
 
 				Toast.makeText(getActivity(), "All set!", Toast.LENGTH_SHORT)
 						.show();

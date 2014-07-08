@@ -3,18 +3,18 @@ package net.npike.android.wearunlock.activity;
 import android.app.Activity;
 import android.os.Bundle;
 
-import net.npike.android.OnboardingInterface;
 import net.npike.android.wearunlock.R;
 import net.npike.android.wearunlock.WearUnlockApp;
 import net.npike.android.wearunlock.fragment.OnboardingConfigurePasswordFragment;
 import net.npike.android.wearunlock.fragment.OnboardingDiscoveryFragment;
 import net.npike.android.wearunlock.fragment.OnboardingRequestDeviceAdminFragment;
+import net.npike.android.wearunlock.interfaces.OnboardingInterface;
 
 public class OnboardingActivity extends Activity implements OnboardingInterface {
 
 	private static final String TAG_CONFIGURE_PASSWORD_FRAG = "configure_password_frag";
 	private static final String TAG_REQUEST_ADMIN_FRAG = "request_admin_frag";
-	private static final String TAG_WAIT_FOR_PEBBLE_FRAG = "wait_for_pebble_frag";
+	private static final String TAG_WAIT_FOR_PEBBLE_DEVICE = "wait_for_pebble_frag";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class OnboardingActivity extends Activity implements OnboardingInterface 
 					.beginTransaction()
 					.replace(R.id.fragment_placeholder,
 							OnboardingDiscoveryFragment.getInstance(),
-							TAG_WAIT_FOR_PEBBLE_FRAG).commit();
+                            TAG_WAIT_FOR_PEBBLE_DEVICE).commit();
 		}
 	}
 

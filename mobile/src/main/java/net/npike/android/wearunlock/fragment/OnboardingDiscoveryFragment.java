@@ -16,12 +16,12 @@ import android.widget.TextView;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.squareup.otto.Subscribe;
 
-import net.npike.android.OnboardingInterface;
 import net.npike.android.util.BindingAdapter;
 import net.npike.android.util.BusProvider;
 import net.npike.android.util.LogWrap;
 import net.npike.android.wearunlock.R;
-import net.npike.android.wearunlock.WearDiscoveryService;
+import net.npike.android.wearunlock.interfaces.OnboardingInterface;
+import net.npike.android.wearunlock.service.WearDiscoveryService;
 import net.npike.android.wearunlock.event.WearNode;
 
 import java.util.ArrayList;
@@ -107,13 +107,6 @@ public class OnboardingDiscoveryFragment extends Fragment implements AdapterView
                 }
             }
         });
-
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                ((OnboardingInterface) getActivity()).onPebbleFound(event.getId());
-//            }
-//        });
     }
 
     @Override

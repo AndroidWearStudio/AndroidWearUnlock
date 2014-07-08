@@ -1,11 +1,8 @@
 package net.npike.android.wearunlock.activity;
 
-import android.app.AlertDialog;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -18,15 +15,12 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
-import android.util.Log;
-import android.widget.Toast;
 
-import net.npike.android.wearunlock.BuildConfig;
 import net.npike.android.wearunlock.R;
 import net.npike.android.wearunlock.WearUnlockApp;
-import net.npike.android.wearunlock.WearUnlockService;
+import net.npike.android.wearunlock.service.WearUnlockService;
 import net.npike.android.wearunlock.fragment.PasswordChangeFragment;
-import net.npike.android.wearunlock.receiver.PebbleUnlockDeviceAdminReceiver;
+import net.npike.android.wearunlock.receiver.WearUnlockDeviceAdminReceiver;
 
 public class PrefActivity extends PreferenceActivity implements
 		OnSharedPreferenceChangeListener, OnPreferenceClickListener {
@@ -45,9 +39,9 @@ public class PrefActivity extends PreferenceActivity implements
 				Intent launchIntent = new Intent(PrefActivity.this,
 						OnboardingActivity.class);
 				startActivity(launchIntent);
-				// requestAdmin();
 			} else {
-				mDPM.removeActiveAdmin(mDeviceAdminSample);
+                WearUnlockService.stopService(PrefActivity.this);
+				mDevicePolicyManager.removeActiveAdmin(mDeviceAdminReceiver);
 				return true;
 			}
 			return false;
@@ -55,8 +49,8 @@ public class PrefActivity extends PreferenceActivity implements
 	};
 
 	private static final String TAG = "PrefActivity";
-	private DevicePolicyManager mDPM;
-	private ComponentName mDeviceAdminSample;
+	private DevicePolicyManager mDevicePolicyManager;
+	private ComponentName mDeviceAdminReceiver;
 	private SwitchPreference mSwitchPreferenceEnable;
 	private boolean mIgnoreNextEnableRequest = false;
 
@@ -67,10 +61,9 @@ public class PrefActivity extends PreferenceActivity implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Prepare to work with the DPM
-		mDPM = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-		mDeviceAdminSample = new ComponentName(this,
-				PebbleUnlockDeviceAdminReceiver.class);
+		mDevicePolicyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+		mDeviceAdminReceiver = new ComponentName(this,
+				WearUnlockDeviceAdminReceiver.class);
 
 		addPreferencesFromResource(R.xml.preferences);
 
@@ -102,40 +95,7 @@ public class PrefActivity extends PreferenceActivity implements
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences pref, String key) {
-		if (BuildConfig.DEBUG) {
-			Log.d(TAG, "onSharedPreferenceChanged " + key);
-		}
-		if (key.equalsIgnoreCase(getString(R.string.pref_key_password))) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage(R.string.dialog_password_apply_now_message);
-			builder.setPositiveButton(R.string.dialog_password_apply_now_yes,
-					new OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							boolean result = mDPM
-									.resetPassword(
-											WearUnlockApp.getInstance()
-													.getPassword(),
-											DevicePolicyManager.RESET_PASSWORD_REQUIRE_ENTRY);
-							if (result) {
-								Toast.makeText(
-										PrefActivity.this,
-										R.string.dialog_password_apply_now_password_changed,
-										Toast.LENGTH_SHORT).show();
-							} else {
-								Toast.makeText(
-										PrefActivity.this,
-										R.string.dialog_password_apply_now_couldn_t_reset_password,
-										Toast.LENGTH_SHORT).show();
-							}
-
-						}
-					});
-			builder.setNegativeButton(R.string.dialog_password_apply_now_no,
-					null);
-			builder.show();
-		} else if (key.equalsIgnoreCase(getString(R.string.pref_key_enable))) {
+		if (key.equalsIgnoreCase(getString(R.string.pref_key_enable))) {
 			if (WearUnlockApp.getInstance().isEnabled()) {
 				mIgnoreNextEnableRequest = true;
 				mSwitchPreferenceEnable.setChecked(true);

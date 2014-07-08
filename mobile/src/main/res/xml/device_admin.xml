@@ -19,10 +19,7 @@
 
     <uses-policies>
         <limit-password />
-        <!--
-        <limit-password />
-        <watch-login />
-        -->
+
         <reset-password />
 
         <force-lock />
