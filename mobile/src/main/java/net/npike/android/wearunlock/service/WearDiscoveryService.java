@@ -11,8 +11,10 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.squareup.otto.Subscribe;
 
 import net.npike.android.util.BusProvider;
+import net.npike.android.util.LogWrap;
 import net.npike.android.wearunlock.wearutil.DiscoveryHelper;
 
 /**
@@ -54,6 +56,12 @@ public class WearDiscoveryService extends Service {
         Intent intent = new Intent(context, WearDiscoveryService.class);
         intent.setAction(ACTION_DISCOVER);
         context.startService(intent);
+    }
+
+
+    public static void stopService(Context context) {
+        Intent intent = new Intent(context, WearDiscoveryService.class);
+        context.stopService(intent);
     }
 
     @Override
@@ -107,4 +115,5 @@ public class WearDiscoveryService extends Service {
     private void handleDiscovery() {
         DiscoveryHelper.getInstance().startDiscovery(this);
     }
+
 }

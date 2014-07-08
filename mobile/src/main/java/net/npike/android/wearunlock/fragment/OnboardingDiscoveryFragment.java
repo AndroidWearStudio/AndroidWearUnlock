@@ -61,6 +61,7 @@ public class OnboardingDiscoveryFragment extends Fragment implements AdapterView
 
     @Override
     public void onPause() {
+        WearDiscoveryService.stopService(getActivity());
         BusProvider.getInstance().unregister(this);
         super.onPause();
     }
