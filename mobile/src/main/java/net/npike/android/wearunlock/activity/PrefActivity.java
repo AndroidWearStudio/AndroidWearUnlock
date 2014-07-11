@@ -90,7 +90,10 @@ public class PrefActivity extends PreferenceActivity implements
 		getPreferenceManager().getSharedPreferences()
 				.registerOnSharedPreferenceChangeListener(this);
 
-        WearUnlockService.startService(this);
+
+        if (WearUnlockApp.getInstance().isEnabled()) {
+            WearUnlockService.startService(this);
+        }
 	}
 
 	@Override
