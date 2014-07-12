@@ -1,13 +1,47 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.Wearunlock">
+        <item name="android:editTextStyle">@style/EditTextWearUnlock</item>
+        <item name="android:listViewStyle">@style/ListViewWearUnlock</item>
+        <item name="android:listViewWhiteStyle">@style/ListViewWearUnlock.White</item>
+        <item name="android:spinnerItemStyle">@style/SpinnerItemWearUnlock</item>
+        <item name="android:buttonStyle">@style/ButtonWearUnlock</item>
+        <item name="android:imageButtonStyle">@style/ImageButtonWearUnlock</item>
     </style>
 
     <style name="puTextApperanceLarge" parent="android:Widget.Holo.Light.TextView">
         <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
         <item name="android:textColor">@color/androidwear_accent</item>
     </style>
+
+    <style name="ListViewWearUnlock" parent="android:Widget.ListView">
+        <item name="android:listSelector">@drawable/wearunlock_list_selector_holo_dark</item>
+    </style>
+
+    <style name="ListViewWearUnlock.White" parent="android:Widget.ListView.White">
+        <item name="android:listSelector">@drawable/wearunlock_list_selector_holo_dark</item>
+    </style>
+
+    <style name="SpinnerItemWearUnlock" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="EditTextWearUnlock" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/wearunlock_edit_text_holo_dark</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="ButtonWearUnlock" parent="android:Widget.Button">
+        <item name="android:background">@drawable/wearunlock_btn_default_holo_dark</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:minWidth">64dip</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
+    <style name="ImageButtonWearUnlock" parent="android:Widget.ImageButton">
+        <item name="android:background">@drawable/wearunlock_btn_default_holo_dark</item>
+    </style>
+
 
 </resources>

@@ -1,0 +1,21 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.Wearunlock">
+        <item name="android:editTextBackground">@drawable/wearunlock_edit_text_holo_dark</item>
+        <item name="android:listChoiceBackgroundIndicator">@drawable/wearunlock_list_selector_holo_dark</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/wearunlock_activated_background_holo_dark</item>
+        <item name="android:buttonStyle">@style/ButtonWearUnlock</item>
+        <item name="android:imageButtonStyle">@style/ImageButtonWearUnlock</item>
+    </style>
+
+    <style name="ButtonWearUnlock" parent="android:Widget.Holo.Button">
+        <item name="android:background">@drawable/wearunlock_btn_default_holo_dark</item>
+    </style>
+
+    <style name="ImageButtonWearUnlock" parent="android:Widget.Holo.ImageButton">
+        <item name="android:background">@drawable/wearunlock_btn_default_holo_dark</item>
+    </style>
+
+
+</resources>
