@@ -1,6 +1,6 @@
 # Wear Unlock
 
-A simple Android app that enables functionality similiar to the "Trusted Device" unlock features for Android Wear that will eventually show up in Android L. Supported on Jellybean and above.
+A simple Android app that enables functionality similar to the "Trusted Device" unlock features for Android Wear that will eventually show up in Android L. Supported on Jellybean and above.
 
 Once you have paired your Android Wear device to this app, it will lock your device with a specified password when your Android Wear device has been disconnected - and unlock your device whenever your Android Wear device is connected.
 
