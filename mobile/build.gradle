@@ -35,7 +35,6 @@ android.signingConfigs.release.keyPassword props.keyAliasPassword
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    wearApp project(':wear')
     compile 'com.google.android.gms:play-services-wearable:+'
     compile 'com.android.support:appcompat-v7:20+'
     compile 'com.android.support:support-v4:20.0.+'
