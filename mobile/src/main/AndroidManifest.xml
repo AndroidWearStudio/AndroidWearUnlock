@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.npike.android.wearunlock">
 
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".WearUnlockApp"
@@ -25,7 +25,8 @@
             android:label="@string/title_activity_log" />
         <activity
             android:name="net.npike.android.wearunlock.activity.OnboardingActivity"
-            android:label="@string/title_activity_onboarding" />
+            android:label="@string/title_activity_onboarding"
+            android:windowSoftInputMode="adjustResize" />
 
         <service
             android:name=".service.WearUnlockService"
@@ -63,7 +64,7 @@
 
         <receiver android:name="net.npike.android.wearunlock.receiver.StartupReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
