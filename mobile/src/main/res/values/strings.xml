@@ -15,7 +15,7 @@
     <string name="notification_watch_connected_text">Passcode disabled.</string>
     <string name="pref_enable_off">Off</string>
     <string name="pref_enable_on">On</string>
-    <string name="pref_category_password">Password</string>
+    <string name="pref_category_password">Change password</string>
     <string name="pref_category_about">About</string>
     <string name="pref_key_version">version</string>
     <string name="pref_version">Version</string>

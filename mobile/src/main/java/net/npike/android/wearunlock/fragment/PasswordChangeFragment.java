@@ -6,7 +6,6 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,19 +17,18 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.npike.android.util.LogWrap;
 import net.npike.android.wearunlock.R;
 import net.npike.android.wearunlock.WearUnlockApp;
 
 public class PasswordChangeFragment extends DialogFragment {
 
-    public static PasswordChangeFragment getInstance() {
-        return new PasswordChangeFragment();
-    }
-
     private EditText mEditTextPassword;
     private EditText mEditTextPasswordConfirm;
     private TextView mTextViewPasswordStatus;
+
+    public static PasswordChangeFragment getInstance() {
+        return new PasswordChangeFragment();
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -66,34 +64,18 @@ public class PasswordChangeFragment extends DialogFragment {
         mTextViewPasswordStatus = (TextView) view
                 .findViewById(R.id.textViewPasswordStatus);
 
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                int heightDiff = view.getRootView().getHeight() - view.getHeight();
-                if (heightDiff > 100) { // if more than 100 pixels, its probably a keyboard...
-                    scrollViewPassword.smoothScrollTo(0, mTextViewPasswordStatus.getBottom());
+        if (scrollViewPassword != null) {
+            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    int heightDiff = view.getRootView().getHeight() - view.getHeight();
+                    if (heightDiff > 100) { // if more than 100 pixels, its probably a keyboard...
+                        scrollViewPassword.smoothScrollTo(0, mTextViewPasswordStatus.getBottom());
 
+                    }
                 }
-            }
-        });
-
-
-        mEditTextPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                                                       @Override
-                                                       public void onFocusChange(View v, boolean hasFocus) {
-                                                           LogWrap.l("focus? " + hasFocus);
-                                                           if (hasFocus) {
-                                                               new Handler().post(new Runnable() {
-                                                                   @Override
-                                                                   public void run() {
-                                                                       scrollViewPassword.smoothScrollTo(0, mTextViewPasswordStatus.getBottom());
-                                                                   }
-
-                                                               });
-                                                           }
-                                                       }
-                                                   }
-        );
+            });
+        }
 
         mEditTextPasswordConfirm.addTextChangedListener(new
 
