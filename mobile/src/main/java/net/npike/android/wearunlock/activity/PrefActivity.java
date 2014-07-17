@@ -16,6 +16,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 
+import net.npike.android.util.LogWrap;
 import net.npike.android.wearunlock.R;
 import net.npike.android.wearunlock.WearUnlockApp;
 import net.npike.android.wearunlock.service.WearUnlockService;
@@ -98,12 +99,16 @@ public class PrefActivity extends PreferenceActivity implements
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences pref, String key) {
+        LogWrap.l(key);
 		if (key.equalsIgnoreCase(getString(R.string.pref_key_enable))) {
 			if (WearUnlockApp.getInstance().isEnabled()) {
 				mIgnoreNextEnableRequest = true;
 				mSwitchPreferenceEnable.setChecked(true);
 			}
-		}
+		} else if (key.equalsIgnoreCase(getString(R.string.pref_key_enable_notification))) {
+            WearUnlockService.stopService(this);
+            WearUnlockService.startService(this);
+        }
 	}
 
 	@Override

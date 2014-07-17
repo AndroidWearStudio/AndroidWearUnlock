@@ -3,8 +3,6 @@ package net.npike.android.wearunlock.service;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -17,13 +15,13 @@ import com.google.android.gms.wearable.WearableListenerService;
 import com.squareup.otto.Subscribe;
 
 import net.npike.android.util.BusProvider;
+import net.npike.android.util.DevicePasswordManager;
 import net.npike.android.util.LogWrap;
 import net.npike.android.wearunlock.R;
 import net.npike.android.wearunlock.WearUnlockApp;
 import net.npike.android.wearunlock.activity.PrefActivity;
 import net.npike.android.wearunlock.event.WearNode;
 import net.npike.android.wearunlock.provider.LogContract;
-import net.npike.android.wearunlock.receiver.WearUnlockDeviceAdminReceiver;
 import net.npike.android.wearunlock.wearutil.DiscoveryHelper;
 
 /**
@@ -32,20 +30,24 @@ import net.npike.android.wearunlock.wearutil.DiscoveryHelper;
 public class WearUnlockService extends WearableListenerService {
 
     public static final int NOTIFICATION_ID = 1;
+    public static final String ACTION_REBOOT = "reboot";
 
     private Notification mNotification;
     private NotificationManager mNotificationManager;
-    private DevicePolicyManager mDevicePolicyManager;
-    private ComponentName mDeviceAdminReceiver;
     private boolean mLastResult;
+    private Intent mStartingIntent;
+    private DevicePasswordManager mDevicePasswordManager;
 
-    private enum WearState {
-        UNKNOWN, CONNECTED, DISCONNECTED, ERROR
-    }
-
-
+    @Deprecated
     public static void startService(Context context) {
         Intent intent = new Intent(context, WearUnlockService.class);
+        context.startService(intent);
+    }
+
+    @Deprecated
+    public static void startServiceBoot(Context context) {
+        Intent intent = new Intent(context, WearUnlockService.class);
+        intent.setAction(ACTION_REBOOT);
         context.startService(intent);
     }
 
@@ -56,23 +58,27 @@ public class WearUnlockService extends WearableListenerService {
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        mStartingIntent = intent;
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
         LogWrap.l();
 
         BusProvider.getInstance().register(this);
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        mDevicePolicyManager = (DevicePolicyManager) getSystemService(
-                Context.DEVICE_POLICY_SERVICE);
-        mDeviceAdminReceiver = new ComponentName(this,
-                WearUnlockDeviceAdminReceiver.class);
+        mDevicePasswordManager = new DevicePasswordManager(this);
 
         setupAsForeground();
 
 
         if (WearUnlockApp.getInstance().isEnabled()) {
-            LogWrap.l("Existing Android Wear id: ;" + WearUnlockApp.getInstance().getPairedPebbleAddress() + ";");
+            LogWrap.l("Existing Android Wear id: ;" + WearUnlockApp.getInstance().getPairdAndroidWearId() + ";");
+
 
             DiscoveryHelper.getInstance().startDiscovery(this);
         }
@@ -86,7 +92,7 @@ public class WearUnlockService extends WearableListenerService {
 
         // found a connected device.  Does this match the one we paired with during onboarding?
         LogWrap.l(";" + event.getId() + ";");
-        if (TextUtils.equals(event.getId(), WearUnlockApp.getInstance().getPairedPebbleAddress())) {
+        if (TextUtils.equals(event.getId(), WearUnlockApp.getInstance().getPairdAndroidWearId())) {
             if (WearUnlockApp.getInstance().isEnabled()) {
                 onRequestLockDevice(WearState.CONNECTED);
             }
@@ -127,10 +133,14 @@ public class WearUnlockService extends WearableListenerService {
     }
 
     private void setupAsForeground() {
-        LogWrap.l();
-        buildNotification(WearState.UNKNOWN);
+        if (WearUnlockApp.getInstance().shouldShowNotification()) {
+            LogWrap.l();
+            buildNotification(WearState.UNKNOWN);
 
-        startForeground(NOTIFICATION_ID, mNotification);
+            startForeground(NOTIFICATION_ID, mNotification);
+        } else {
+            LogWrap.l("Not going into foreground because notification setting is disabled.");
+        }
     }
 
     private void onRequestLockDevice(WearState state) {
@@ -141,14 +151,14 @@ public class WearUnlockService extends WearableListenerService {
         switch (state) {
             case CONNECTED:
                 logMessage(true, "Device connected.");
-                lockResult =  onUnlockDevice();
+                lockResult = mDevicePasswordManager.onUnlockDevice();
                 break;
             case UNKNOWN:
                 // Lock device if we aren't sure
             case DISCONNECTED:
             default:
                 logMessage(false, "Device disconnected.");
-                lockResult =  onLockDevice();
+                lockResult = mDevicePasswordManager.onLockDevice();
                 break;
         }
 
@@ -159,27 +169,16 @@ public class WearUnlockService extends WearableListenerService {
         updateNotification(state);
     }
 
-    private boolean onLockDevice() {
-        LogWrap.l();
-
-        if (!TextUtils.isEmpty(WearUnlockApp.getInstance().getPassword())) {
-            return resetPassword(WearUnlockApp.getInstance().getPassword());
-        } else {
-            return false;
-        }
-
-    }
-
-    private boolean onUnlockDevice() {
-        LogWrap.l();
-        return resetPassword("");
-    }
 
     private void updateNotification(WearState state) {
         LogWrap.l();
-        buildNotification(state);
+        if (WearUnlockApp.getInstance().shouldShowNotification()) {
+            buildNotification(state);
 
-        mNotificationManager.notify(NOTIFICATION_ID, mNotification);
+            mNotificationManager.notify(NOTIFICATION_ID, mNotification);
+        } else {
+            LogWrap.l("Not updating notification because notification is disabled.");
+        }
     }
 
     private void buildNotification(WearState state) {
@@ -234,22 +233,6 @@ public class WearUnlockService extends WearableListenerService {
         mNotification = builder.build();
     }
 
-    protected boolean resetPassword(String newPassword) {
-        LogWrap.l();
-        if (mDevicePolicyManager.isAdminActive(mDeviceAdminReceiver)) {
-            mLastResult = mDevicePolicyManager.resetPassword(newPassword,
-                    DevicePolicyManager.RESET_PASSWORD_REQUIRE_ENTRY);
-
-            LogWrap.l(mLastResult ? "Password changed." : "Password not changed.");
-
-            return mLastResult;
-        } else {
-            LogWrap.l("Wear Unlock is not a device admin.");
-
-            return false;
-        }
-    }
-
 
     private void logMessage(boolean isConnected, String message) {
         ContentValues cv = new ContentValues();
@@ -262,6 +245,11 @@ public class WearUnlockService extends WearableListenerService {
         }
 
         getContentResolver().insert(LogContract.ConnectionEvent.CONTENT_URI, cv);
+    }
+
+
+    private enum WearState {
+        UNKNOWN, CONNECTED, DISCONNECTED, ERROR
     }
 }
 

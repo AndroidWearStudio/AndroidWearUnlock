@@ -36,7 +36,7 @@
     <string name="dialog_password_apply_now_couldn_t_reset_password">Couldn\'t reset password.</string>
     <string name="dialog_password_apply_now_no">No</string>
     <string name="title_activity_onboarding">Setup</string>
-    <string name="pref_key_pebble_address">pebble_address</string>
+    <string name="pref_key_wear_id">wear_id</string>
     <string name="oboarding_password_description">Wear Unlock found an Android Wear device (##%1$s##)</string>
     <string name="onboarding_connecting_with_your_pebble">Connecting with your Android Wear device</string>
     <string name="onboarding_is_your_pebble_currently_turned_on_and_connected_to_your_phone_">Is your Android Wear device Wear turned on and connected to your phone?</string>
@@ -53,4 +53,6 @@
     <string name="admin_description">Allow your Android Wear device to control if your device is locked or not.</string>
     <string name="service_waiting_for_wear">Waiting for device...</string>
     <string name="notification_disconnected">Passcode enabled.</string>
+    <string name="pref_key_enable_notification">key_enable_notification</string>
+    <string name="pref_title_enable_notification">Show low priority notification</string>
 </resources>

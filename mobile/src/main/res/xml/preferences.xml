@@ -12,6 +12,11 @@
         android:key="@string/pref_key_set_password"
         android:title="@string/pref_category_password" />
 
+    <CheckBoxPreference  android:dependency="@string/pref_key_enable"
+        android:key="@string/pref_key_enable_notification"
+        android:title="@string/pref_title_enable_notification"
+        android:defaultValue="false"/>
+
     <PreferenceCategory android:title="@string/pref_category_about" >
         <Preference
             android:enabled="false"

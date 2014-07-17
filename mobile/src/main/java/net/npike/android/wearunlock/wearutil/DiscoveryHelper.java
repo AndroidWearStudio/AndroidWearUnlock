@@ -36,6 +36,7 @@ public class DiscoveryHelper implements GoogleApiClient.ConnectionCallbacks {
     }
 
     public void startDiscovery(Context context) {
+        LogWrap.l();
         mGoogleAppiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {

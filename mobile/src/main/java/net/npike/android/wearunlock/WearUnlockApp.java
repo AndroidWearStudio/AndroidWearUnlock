@@ -36,6 +36,10 @@ public class WearUnlockApp extends Application {
                 .commit();
     }
 
+    public boolean shouldShowNotification() {
+        return mPrefs.getBoolean(getString(R.string.pref_key_enable_notification), false);
+    }
+
     public String getPassword() {
         try {
             return new String(mCrypto.decrypt((mPrefs.getString(
@@ -57,10 +61,10 @@ public class WearUnlockApp extends Application {
         }
     }
 
-    public String getPairedPebbleAddress() {
+    public String getPairdAndroidWearId() {
         try {
             return new String(mCrypto.decrypt(mPrefs.getString(
-                    getString(R.string.pref_key_pebble_address), ""))).trim();
+                    getString(R.string.pref_key_wear_id), ""))).trim();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,11 +72,11 @@ public class WearUnlockApp extends Application {
         return null;
     }
 
-    public void putPairedPebbleAddress(String address) {
+    public void putPairedAndroidWearId(String address) {
         // mask it because I feel like it.
         try {
             mPrefs.edit()
-                    .putString(getString(R.string.pref_key_pebble_address),
+                    .putString(getString(R.string.pref_key_wear_id),
                             CrappyCrypto.bytesToHex(mCrypto.encrypt(address))).commit();
         } catch (Exception e) {
             e.printStackTrace();

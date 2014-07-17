@@ -41,7 +41,7 @@ public class OnboardingActivity extends Activity implements OnboardingInterface 
 
 	@Override
 	public void onPebbleFound(String address) {
-        WearUnlockApp.getInstance().putPairedPebbleAddress(address);
+        WearUnlockApp.getInstance().putPairedAndroidWearId(address);
 
 		getFragmentManager()
 				.beginTransaction()
