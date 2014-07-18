@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreference
         android:key="@string/pref_key_enable"
@@ -12,21 +12,16 @@
         android:key="@string/pref_key_set_password"
         android:title="@string/pref_category_password" />
 
-    <CheckBoxPreference  android:dependency="@string/pref_key_enable"
-        android:key="@string/pref_key_enable_notification"
-        android:title="@string/pref_title_enable_notification"
-        android:defaultValue="false"/>
-
-    <PreferenceCategory android:title="@string/pref_category_about" >
+    <PreferenceCategory android:title="@string/pref_category_about">
         <Preference
             android:enabled="false"
             android:key="@string/pref_key_version"
             android:summary=""
             android:title="@string/pref_version" />
-        <Preference 
+        <Preference
             android:key="foo"
             android:summary=""
-            android:title="Connection Log" >
+            android:title="Connection Log">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:targetClass="net.npike.android.wearunlock.activity.LogActivity"

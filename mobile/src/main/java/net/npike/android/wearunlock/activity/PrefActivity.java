@@ -9,6 +9,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -17,6 +18,7 @@ import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
 
 import net.npike.android.util.LogWrap;
+import net.npike.android.wearunlock.BuildConfig;
 import net.npike.android.wearunlock.R;
 import net.npike.android.wearunlock.WearUnlockApp;
 import net.npike.android.wearunlock.service.WearUnlockService;
