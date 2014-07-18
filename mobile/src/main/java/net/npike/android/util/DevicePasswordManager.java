@@ -23,6 +23,10 @@ public class DevicePasswordManager {
                 WearUnlockDeviceAdminReceiver.class);
     }
 
+    public boolean isDeviceEncrypted() {
+        return mDevicePolicyManager.getStorageEncryptionStatus() == DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE;
+    }
+
 
     public boolean onLockDevice() {
         LogWrap.l();
