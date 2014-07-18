@@ -43,7 +43,7 @@
     <string name="onboarding_pebble_unlock_needs_you_to_temporarily_turn_off_the_bluetooth_or_power_cycle_your_pebble_">Pebble Unlock needs you to temporarily turn off the Bluetooth or power cycle your Android Wear device.</string>
     <string name="onboarding_waiting_for_pebble">Waiting for Pebble</string>
     <string name="onboarding_pebble_found_">Pebble found!</string>
-    <string name="onboarding_configure_password_description">Wear Unlock must disable your current device password if you already have one enabled.  Please setup a new password below that Wear Unlock can use to lock your device with when your Android Wear device is connected.</string>
+    <string name="onboarding_configure_password_description">Wear Unlock must disable your current device password if you already have one enabled.  Please setup a new password below that Wear Unlock can use to lock your device with when your Android Wear device is not connected.</string>
     <string name="onboarding_finish">Finish</string>
     <string name="onboarding_almost_done">Almost done!</string>
     <string name="onboarding_device_admin_summary">Wear Unlock just needs you to do one last thing.  You need to activate Wear Unlock as a device administrator so that we can toggle your lockscreen off when your Android Wear device is connected.</string>
