@@ -17,6 +17,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.npike.android.util.LogWrap;
 import net.npike.android.wearunlock.R;
 import net.npike.android.wearunlock.WearUnlockApp;
 
@@ -58,6 +59,15 @@ public class PasswordChangeFragment extends DialogFragment {
         return builder.create();
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getDialog() != null) {
+            ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        }
+    }
+
     protected void bindView(final View view, boolean requireCurrentPassword) {
         final ScrollView scrollViewPassword = (ScrollView) view.findViewById(R.id.scrollViewPassword);
         mEditTextCurrentPassword = (EditText) view.findViewById(R.id.editTextCurrentPassword);
@@ -81,7 +91,6 @@ public class PasswordChangeFragment extends DialogFragment {
                     int heightDiff = view.getRootView().getHeight() - view.getHeight();
                     if (heightDiff > 100) { // if more than 100 pixels, its probably a keyboard...
                         scrollViewPassword.smoothScrollTo(0, mTextViewPasswordStatus.getBottom());
-
                     }
                 }
             });
@@ -162,7 +171,7 @@ public class PasswordChangeFragment extends DialogFragment {
     }
 
     protected void onPasswordChange(boolean confirmed) {
-
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(confirmed);
     }
 
     protected void handlePasswordConfirm() {
