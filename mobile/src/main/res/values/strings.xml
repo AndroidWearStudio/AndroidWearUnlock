@@ -25,7 +25,7 @@
     <string name="log_disconnected">Android Wear device disconnected.  Device locked.</string>
     <string name="log_no_connection_events_to_show">No connection events to show.</string>
     <string name="dialog_change_passwords_do_not_match">Passwords do not match.</string>
-    <string name="dialog_change_set_password">Set password</string>
+    <string name="dialog_change_set_password">Change password</string>
     <string name="dialog_change_password_not_changed">Password not changed.</string>
     <string name="dialog_change_cancel">Cancel</string>
     <string name="dialog_change_change">Change</string>
@@ -58,4 +58,6 @@
     <string name="dialog_enc_warning_title">Warning</string>
     <string name="dialog_enc_warning_message">Wear Unlock has not been tested on devices that have encrypted filesystems.  Before proceeding please make sure you have Android Device Manager configured in case you need to recover your device.</string>
     <string name="dialog_enc_warning_okay">Okay</string>
+    <string name="dialog_password_current_password_label">Current password</string>
+    <string name="dialog_password_incorrect">Incorrect password.</string>
 </resources>

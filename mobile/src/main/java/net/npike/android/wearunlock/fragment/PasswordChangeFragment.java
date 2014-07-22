@@ -25,6 +25,8 @@ public class PasswordChangeFragment extends DialogFragment {
     private EditText mEditTextPassword;
     private EditText mEditTextPasswordConfirm;
     private TextView mTextViewPasswordStatus;
+    private EditText mEditTextCurrentPassword;
+    private TextView mTextViewCurrentPassword;
 
     public static PasswordChangeFragment getInstance() {
         return new PasswordChangeFragment();
@@ -37,7 +39,7 @@ public class PasswordChangeFragment extends DialogFragment {
 
         View view = inflater
                 .inflate(R.layout.frag_password_change, null, false);
-        bindView(view);
+        bindView(view, true);
 
         builder.setView(view);
         builder.setTitle(R.string.dialog_change_set_password);
@@ -56,13 +58,21 @@ public class PasswordChangeFragment extends DialogFragment {
         return builder.create();
     }
 
-    protected void bindView(final View view) {
+    protected void bindView(final View view, boolean requireCurrentPassword) {
         final ScrollView scrollViewPassword = (ScrollView) view.findViewById(R.id.scrollViewPassword);
+        mEditTextCurrentPassword = (EditText) view.findViewById(R.id.editTextCurrentPassword);
         mEditTextPassword = (EditText) view.findViewById(R.id.editTextPassword);
         mEditTextPasswordConfirm = (EditText) view
                 .findViewById(R.id.editTextPasswordConfirm);
         mTextViewPasswordStatus = (TextView) view
                 .findViewById(R.id.textViewPasswordStatus);
+        mTextViewCurrentPassword = (TextView) view.findViewById(R.id.textViewCurrentPassword);
+
+        if (requireCurrentPassword) {
+            mTextViewCurrentPassword.setVisibility(View.VISIBLE);
+            mEditTextCurrentPassword.setVisibility(View.VISIBLE);
+        }
+
 
         if (scrollViewPassword != null) {
             view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -75,6 +85,37 @@ public class PasswordChangeFragment extends DialogFragment {
                     }
                 }
             });
+        }
+
+        if (requireCurrentPassword) {
+            toggleNewPassword(false);
+
+            mEditTextCurrentPassword.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    // NOOP
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    // NOOP
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (TextUtils.equals(mEditTextCurrentPassword.getText().toString(), WearUnlockApp.getInstance().getPassword().trim())) {
+                        toggleNewPassword(true);
+                        mTextViewPasswordStatus.setText("");
+                    } else {
+                        toggleNewPassword(false);
+                        onPasswordChange(false);
+                        mTextViewPasswordStatus
+                                .setText(R.string.dialog_password_incorrect);
+                    }
+                }
+            });
+
+
         }
 
         mEditTextPasswordConfirm.addTextChangedListener(new
@@ -113,6 +154,11 @@ public class PasswordChangeFragment extends DialogFragment {
 
                                                                 }
         );
+    }
+
+    private void toggleNewPassword(boolean b) {
+        mEditTextPassword.setEnabled(b);
+        mEditTextPasswordConfirm.setEnabled(b);
     }
 
     protected void onPasswordChange(boolean confirmed) {

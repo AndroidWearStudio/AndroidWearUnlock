@@ -1,18 +1,13 @@
 package net.npike.android.wearunlock.fragment;
 
 import android.os.Bundle;
-import android.text.SpannableStringBuilder;
-import android.text.style.CharacterStyle;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import net.npike.android.wearunlock.R;
-import net.npike.android.wearunlock.WearUnlockApp;
 import net.npike.android.wearunlock.interfaces.OnboardingInterface;
 
 public class OnboardingConfigurePasswordFragment extends PasswordChangeFragment
@@ -34,7 +29,7 @@ public class OnboardingConfigurePasswordFragment extends PasswordChangeFragment
         mButtonFinished = (Button) view.findViewById(R.id.buttonFinish);
         mButtonFinished.setOnClickListener(this);
 
-        bindView(view);
+        bindView(view, false);
 
         return view;
     }
