@@ -83,4 +83,8 @@ public class WearUnlockApp extends Application {
         }
     }
 
+    public boolean shouldLockDeviceImmediately() {
+        return mPrefs.getBoolean(getString(R.string.pref_key_lock_immediately), true);
+    }
+
 }

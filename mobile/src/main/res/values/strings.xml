@@ -60,4 +60,7 @@
     <string name="dialog_enc_warning_okay">Okay</string>
     <string name="dialog_password_current_password_label">Current password</string>
     <string name="dialog_password_incorrect">Incorrect password.</string>
+    <string name="pref_key_lock_immediately">lock_immediately</string>
+    <string name="pref_desc_lock_immediately">When enabled, lock the device and turn off the screen as soon as your watch has disconnected.</string>
+    <string name="pref_title_lock_immediately">Lock immediately</string>
 </resources>

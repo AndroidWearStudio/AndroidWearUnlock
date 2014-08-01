@@ -12,6 +12,13 @@
         android:key="@string/pref_key_set_password"
         android:title="@string/pref_category_password" />
 
+    <CheckBoxPreference
+        android:dependency="@string/pref_key_enable"
+        android:key="@string/pref_key_lock_immediately"
+        android:summary="@string/pref_desc_lock_immediately"
+        android:defaultValue="true"
+        android:title="@string/pref_title_lock_immediately" />
+
     <PreferenceCategory android:title="@string/pref_category_about">
         <Preference
             android:enabled="false"

@@ -32,7 +32,11 @@ public class DevicePasswordManager {
         LogWrap.l();
 
         if (!TextUtils.isEmpty(WearUnlockApp.getInstance().getPassword())) {
-            return resetPassword(WearUnlockApp.getInstance().getPassword());
+            boolean result = resetPassword(WearUnlockApp.getInstance().getPassword());
+            if (result && WearUnlockApp.getInstance().shouldLockDeviceImmediately()) {
+                mDevicePolicyManager.lockNow();
+            }
+            return result;
         } else {
             return false;
         }
